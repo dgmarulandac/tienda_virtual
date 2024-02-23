@@ -1,7 +1,7 @@
 <?php
 
     //define("BASE_URL", "http://localhost/tienda_virtual/" );
-    const BASE_URL = "http://localhost/tienda_virtual/";
+    const BASE_URL = "http://localhost/tienda_virtual";
     
     date_default_timezone_set('America/Nome');
     //Datos de conexion de la base de datos
