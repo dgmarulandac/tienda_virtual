@@ -8,7 +8,7 @@
     const DB_HOST = "localhost";
     const DB_USER =  "root";
     const DB_PASSWORD = "";
-    const DB_NAME = "tienda_virtual";
+    const DB_NAME = "db_ecommerce";
     const DB_CHARSET = "charset=utf8";
     //Delimitadores decimales y millar Ej: 24,1989.00
     const SPD = ".";

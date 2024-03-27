@@ -29,6 +29,12 @@
         $format .= print_r('</pre>');
         return $format;
     }
+    //esta funcion nos sirve para mostrar cada vez que necesitemos un Modal
+    function getModal(string $nameModal, $data)
+    {
+        $view_modal = "Views/template/Modals/{$nameModal}.php";
+        require_once $view_modal;
+    }
     //Elimina excesi de espacios entre las palabras
     function strClean($strCadena){
         $string = preg_replace(['/\s+/','/^\s|\s$/'],[' ',''], $strCadena);

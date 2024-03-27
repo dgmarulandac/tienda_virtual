@@ -21,7 +21,7 @@
             </a>
             <ul class="treeview-menu">
                 <li><a class="treeview-item" href="<?php echo base_url()?>/users"><i class="icon fa fa-circle-o"></i> Usuarios</a></li>
-                <li><a class="treeview-item" href="<?php echo base_url()?>/rol"><i class="icon fa fa-circle-o"></i> Roles</a></li>
+                <li><a class="treeview-item" href="<?php echo base_url()?>/roles"><i class="icon fa fa-circle-o"></i> Roles</a></li>
                 <li><a class="treeview-item" href="<?php echo base_url()?>/permissions"><i class="icon fa fa-circle-o"></i> Permisos</a></li>
             </ul>
         </li>
