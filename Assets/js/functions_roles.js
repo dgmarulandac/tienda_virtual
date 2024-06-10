@@ -215,13 +215,12 @@ document.addEventListener('DOMContentLoaded', function() {
     
     function fntPermisos() {
         var btnPermisosRol = document.querySelectorAll(".btnPermisosRol");
-        
         for (var i = 0; i < btnPermisosRol.length; i++) {
             btnPermisosRol[i].addEventListener('click', function () {
     
                 var idrol = this.getAttribute("rl");
                 var request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
-                var ajaxUrl = base_url + '/permisos/getPermisos/' + idrol;
+                var ajaxUrl = base_url + '/Permisos/getPermisos/' + idrol;
                 request.open("GET", ajaxUrl, true);
                 request.send();
     
