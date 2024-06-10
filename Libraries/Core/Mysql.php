@@ -12,20 +12,20 @@
         }
 
         //insert new Register
-        public function insert(string $query, array $arrvalues){
-             $this->strquery = $query;
-             $this->arrValues = $arrvalues;
-             $insert =$this->conexion->prepare($this->strquery);
-             $resInsert = $insert->execute($this->arrValues);
-             if($resInsert)
-             {
-                $lastInsert = $this->conexion->lastInsertId();
-             }else{
-                $lastInsert = 0;
-             }
-             
-             return $lastInsert;
-         }
+        public function insert(string $query, array $arrValues)
+            {
+               $this->strquery = $query;
+               $this->arrVAlues = $arrValues;
+               $insert = $this->conexion->prepare($this->strquery);
+               $resInsert = $insert->execute($this->arrVAlues);
+               if($resInsert)
+               {
+                  $lastInsert = $this->conexion->lastInsertId();
+               }else{
+                  $lastInsert = 0;
+               }
+               return $lastInsert; 
+            }
          //Return one Register
          public function select(string $query)
          {
