@@ -30,19 +30,19 @@
          public function select(string $query)
          {
             $this->strquery = $query;
-            $result = $this->conexion->prepare($this->strquery);
+              $result = $this->conexion->prepare($this->strquery);
             $result->execute();
-            $data = $result->fetch(PDO::FETCH_ASSOC);
-            return $data;
+              $data = $result->fetch(PDO::FETCH_ASSOC);
+              return $data;
          }
-         //Return all the registers
+         //Devuelve todos los registros
          public function select_all(string $query)
          {
             $this->strquery = $query;
-            $result = $this->conexion->prepare($this->strquery);
-            $result->execute();
-            $data = $result->fetchall(PDO::FETCH_ASSOC);
-            return $data;
+               $result = $this->conexion->prepare($this->strquery);
+               $result->execute();
+               $data = $result->fetchAll(PDO::FETCH_ASSOC);
+               return $data;
          }
          //update Registers
          public function update (string $query, array $arrvalues)
