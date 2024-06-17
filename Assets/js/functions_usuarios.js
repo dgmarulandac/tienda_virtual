@@ -1,7 +1,36 @@
+var tableUsuarios;
+
 document.addEventListener('DOMContentLoaded', function(){
-    var tableUsuarios;
+
+    tableUsuarios = $('#tableUsuarios').dataTable( {
+        "aProcessing": true,
+        "aServerSide": true,
+        "language": {
+            "url": "Lang/Spanish.json" 
+        },
+        "ajax": {
+            "url": base_url + "/usuarios/getUsuarios",
+            "dataSrc": ""
+        },
+        "columns": [
+            {"data": "idpersona"},
+            {"data": "identificacion"},
+            {"data": "nombres"},
+            {"data": "apellidos"},
+            {"data": "telefono"},
+            {"data": "email_user"},
+            {"data": "nombrerol"},
+            {"data": "status"},
+            {"data": "options"}
+        ],
+        "responsive": true, 
+        "destroy": true, 
+        "iDisplayLength": 10,
+        "order": [[0, "desc"]]
+        });
+
+
     var formUsuario = document.querySelector('#formUsuario');
-    
     if (formUsuario) {
         formUsuario.onsubmit = function(e){
             e.preventDefault();
@@ -53,6 +82,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
 window.addEventListener('load', function(){
     fntRolesUsuario();
+    fntVerUsuario();
 }, false);
 
 
@@ -69,6 +99,43 @@ function fntRolesUsuario(){
             $('#listRolid').selectpicker('render');
         }
     }
+}
+function fntVerUsuario(){
+    var btnViewUsuario = document.querySelectorAll(".btnViewUsuario");
+    btnViewUsuario.forEach(function(btnViewUsuario){
+        btnViewUsuario.addEventListener('click', function(){
+            var idUsuario = this.getAttribute("us");
+            var request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+            var ajaxUser = base_url+'/Usuarios/getUsuario/' + idUsuario;
+            request.open("GET", ajaxUser, true);
+            request.send();
+
+            request.onreadystatechange = function(){
+                if(request.readyState == 4 && request.status == 200){
+                    var objData = JSON.parse(request.responseText);
+                    if(objData.status)
+                        {
+                            var estadousuario = objData.data.status == 1 ?
+                            '<span class="badge badge-success">Activo</span>':
+                            '<span class="badge badge-danger">Inactivo</span>';
+                            document.querySelector("#celIdentificacion").innerHTML = objData.data.identificacion;
+                            document.querySelector("#celNombre").innerHTML = objData.data.nombres;
+                            document.querySelector("#celApellido").innerHTML = objData.data.apellidos;
+                            document.querySelector("#celTelefono").innerHTML = objData.data.telefono;
+                            document.querySelector("#celEmail").innerHTML = objData.data.email_user;
+                            document.querySelector("#celStatus").innerHTML = estadousuario;
+                            document.querySelector("#celTipodeUsuario").innerHTML = objData.data.nombrerol;
+                            document.querySelector("#celFechaRegistro").innerHTML = objData.data.fechaRegistro;
+                            $('#modalViewUser').modal('show');
+                        }else{
+                            swal("Error", objData.msg, "error");
+                        }
+                }
+            }
+
+            
+        })
+    })
 }
 
 function openModal(){

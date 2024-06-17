@@ -11,7 +11,7 @@
         </div>
         <ul class="app-breadcrumb breadcrumb">
           <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-          <li class="breadcrumb-item"><a href="<?php echo base_url()?>/roles"><?php echo $data['page_title']?></a></li>
+          <li class="breadcrumb-item"><a href="<?php echo base_url()?>/usuarios"><?php echo $data['page_title']?></a></li>
         </ul>
       </div>
       
@@ -24,26 +24,18 @@
                   <thead>
                     <tr>
                       <th>ID</th>
+                      <th>Identificacion</th>
                       <th>Nombre</th>
                       <th>Apellidos</th>
-                      <th>Email</th>
                       <th>Teléfono</th>
+                      <th>Email</th>
                       <th>Rol</th>
                       <th>Status</th>
                       <th>Acciones</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Carlos</td>
-                        <td>Hernandez</td>
-                        <td>loquese@gmail.com</td>
-                        <td>3108252795</td>
-                        <td>admin</td>
-                        <td>activo</td>
-                        <td>mamar y silvar</td>
-                    </tr>
+                    
                   </tbody>
                 </table>
               </div>

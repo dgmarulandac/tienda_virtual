@@ -30,7 +30,7 @@
 
                     $arrData[$i]['options'] = '<div class="text-center">
                     
-                                                    <button class="btn btn-secondary btn-sm btnPermisosRol" id="'.$arrData[$i]['idrol'].'" rl="'.$arrData[$i]['idrol'].'" onClick="fntPermisos('.$arrData[$i]['idrol'].')" title="Permisos"><i class="fa-solid fa-key"></i></button>
+                                                    <button class="btn btn-secondary btn-sm btnPermisosRol" rl="'.$arrData[$i]['idrol'].'" onClick="fntPermisos('.$arrData[$i]['idrol'].')" title="Permisos"><i class="fa-solid fa-key"></i></button>
                                                     <button class="btn btn-primary btn-sm btnEditRol"  rl="'.$arrData[$i]['idrol'].'" onClick="fntEditRol('.$arrData[$i]['idrol'].')" title="Editar"><i class="fa-solid fa-pencil"></i></button>
                                                     <button class="btn btn-danger btn-sm btnDelRol" rl="'.$arrData[$i]['idrol'].'" onClick="fntDelRol('.$arrData[$i]['idrol'].')" title="Eliminar"><i class="fa-solid fa-trash-can"></i></button>
                                                 </div>';

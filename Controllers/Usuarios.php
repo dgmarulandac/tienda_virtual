@@ -55,6 +55,48 @@
                die();
 
             }
+
+            public function getUsuarios()
+            {
+                $arrData = $this->model->selectUsuarios();
+                //dep($arrData);
+
+                for ($i=0; $i < count($arrData); $i++) { 
+                    if ($arrData[$i]['status'] == 1) {
+                        
+                        $arrData[$i]['status'] = '<span class="badge badge-success">Activo</span>';
+                    }else{
+                        $arrData[$i]['status'] = '<span class="badge badge-danger">Inactivo</span>';
+                    }
+
+                    $arrData[$i]['options'] = '<div class="text-center">
+                    
+                                                    <button class="btn btn-info btn-sm btnViewUsuario" id="'.$arrData[$i]['idpersona'].'" us="'.$arrData[$i]['idpersona'].'" onClick="fntVerUsuario('.$arrData[$i]['idpersona'].')" title="Ver usuario"><i class="fa-solid fa-eye"></i></button>
+                                                    <button class="btn btn-primary btn-sm btnEditUsuario" id="'.$arrData[$i]['idpersona'].'" us="'.$arrData[$i]['idpersona'].'" onClick="fntEditUsuario('.$arrData[$i]['idpersona'].')" title="Editar Usuario"><i class="fa-solid fa-pencil"></i></button>
+                                                    <button class="btn btn-danger btn-sm btnDelPersona" id="'.$arrData[$i]['idpersona'].'" us="'.$arrData[$i]['idpersona'].'" onClick="fntDelPersona('.$arrData[$i]['idpersona'].')" title="Eliminar Persona"><i class="fa-solid fa-trash-can"></i></button>
+                                                </div>';
+                }
+                
+                echo json_encode($arrData, JSON_UNESCAPED_UNICODE);
+                die();
+            }
+
+            public function getUsuario(int $idpersona){
+
+                $idusuario = intval($idpersona);
+
+                if($idusuario > 0){
+                    $arrData = $this->model->selectUsuario($idusuario);
+                    if(empty($arrData)){
+                        $arrResponse = array("status" => false, "msg" => 'Datos no encontrados.');
+                    }else {
+                        $arrResponse = array("status" => true, "data" => $arrData);
+                    }
+                    echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
+                }
+                die();
+            }
+            
            
     }
 
