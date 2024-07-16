@@ -66,6 +66,8 @@
         $string = str_ireplace("[","",$string);
         $string = str_ireplace("]","",$string);
         $string = str_ireplace("==","",$string);
+        $srtrin =str_replace(array(')','&','?','--'),'',$string);
+        //real_escape_string x01
         return $string;
     }
     //generador de contraseña de 10 caracteres

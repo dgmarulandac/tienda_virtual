@@ -16,29 +16,29 @@
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
                                             <label for="txtIdentificacion">Identificacion</label>
-                                            <input type="text" class="form-control" id="txtIdentificacion" name="txtIdentificacion" required=""> 
+                                            <input type="text" class="form-control valid validNumber" id="txtIdentificacion" name="txtIdentificacion" required=""> 
                                         </div>
                                     </div>
 
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
                                             <label for="txtNombre">Nombres</label>
-                                            <input type="text" class="form-control" id="txtNombre" name="txtNombre" required=""> 
+                                            <input type="text" class="form-control valid validText" id="txtNombre" name="txtNombre" required=""> 
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label for="txtApellido">Apellidos</label>
-                                            <input type="text" class="form-control" id="txtApellido" name="txtApellido" required=""> 
+                                            <input type="text" class="form-control valid validText" id="txtApellido" name="txtApellido" required=""> 
                                         </div>
                                     </div>
 
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
                                             <label for="txtTelefono">Telefono</label>
-                                            <input type="text" class="form-control" id="txtTelefono" name="txtTelefono" required=""> 
+                                            <input type="text" class="form-control valid validNumber" id="txtTelefono" name="txtTelefono" required="" onkeypress="return controlTag(event);"> 
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label for="txtEmail">Email</label>
-                                            <input type="email" class="form-control" id="txtEmail" name="txtEmail" required=""> 
+                                            <input type="email" class="form-control valid validEmail" id="txtEmail" name="txtEmail" required=""> 
                                         </div>
                                     </div>
 
@@ -93,7 +93,7 @@
                                 <tbody>
                                     <tr>
                                         <td>Identificacion:</td>
-                                        <td id="celIdentificacion">1234567890</td>
+                                        <td id="celIdentificacion"></td>
                                     </tr>
                                     <tr>
                                         <td>Nombres:</td>

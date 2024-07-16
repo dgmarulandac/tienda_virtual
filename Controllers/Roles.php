@@ -30,9 +30,9 @@
 
                     $arrData[$i]['options'] = '<div class="text-center">
                     
-                                                    <button class="btn btn-secondary btn-sm btnPermisosRol" rl="'.$arrData[$i]['idrol'].'" onClick="fntPermisos('.$arrData[$i]['idrol'].')" title="Permisos"><i class="fa-solid fa-key"></i></button>
-                                                    <button class="btn btn-primary btn-sm btnEditRol"  rl="'.$arrData[$i]['idrol'].'" onClick="fntEditRol('.$arrData[$i]['idrol'].')" title="Editar"><i class="fa-solid fa-pencil"></i></button>
-                                                    <button class="btn btn-danger btn-sm btnDelRol" rl="'.$arrData[$i]['idrol'].'" onClick="fntDelRol('.$arrData[$i]['idrol'].')" title="Eliminar"><i class="fa-solid fa-trash-can"></i></button>
+                                                    <button class="btn btn-secondary btn-sm btnPermisosRol"  onClick="fntPermisos('.$arrData[$i]['idrol'].')" title="Permisos"><i class="fa-solid fa-key"></i></button>
+                                                    <button class="btn btn-primary btn-sm btnEditRol"   onClick="fntEditRol('.$arrData[$i]['idrol'].')" title="Editar"><i class="fa-solid fa-pencil"></i></button>
+                                                    <button class="btn btn-danger btn-sm btnDelRol"  onClick="fntDelRol('.$arrData[$i]['idrol'].')" title="Eliminar"><i class="fa-solid fa-trash-can"></i></button>
                                                 </div>';
                 }
                 
@@ -47,8 +47,10 @@
                 $arrData = $this->model->selectRoles();
                 if(count($arrData)> 0){
                     for ($i = 0; $i < count($arrData); $i++){
-
-                        $htmlOptions .= '<option value="'.$arrData[$i]['idrol'].'">'.$arrData[$i]['nombrerol'].'</option>';
+                        if($arrData[$i]['status'] == 1)
+                        {
+                            $htmlOptions .= '<option value="'.$arrData[$i]['idrol'].'">'.$arrData[$i]['nombrerol'].'</option>';
+                        }
                     }
                 }
                 echo $htmlOptions;
@@ -91,7 +93,7 @@
                     $option = 2;
                 }
 
-                if ($request_rol > 0) {
+                if ($request_rol >= 0) {
                     if($option == 1)
                     {
                         $arrResponse = array('status' => true, 'msg' => 'Datos guardados correctamente.');

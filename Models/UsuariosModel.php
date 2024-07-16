@@ -22,7 +22,7 @@
         {
             $this->stridentificacion = $Identificacion;
             $this->strNombre = $Nombre;
-            $this->strAppelido = $Apellido;
+            $this->strAppellido = $Apellido;
             $this->intTelefono = $Telefono;
             $this->strEmail = $Email;
             $this->strPassword = $password;
@@ -42,7 +42,7 @@
                 $arrData = array (
                             $this->stridentificacion,
                             $this->strNombre,
-                            $this->strAppelido,
+                            $this->strAppellido,
                             $this->intTelefono,
                             $this->strEmail,
                             $this->strPassword,
@@ -78,6 +78,71 @@
             $request = $this->select($sql);
             return $request;
 
+        }
+
+        public function updateUsuario(int $idUsuario, string $Identificacion, string $Nombre, string $Apellido, 
+        int $Telefono, string $Email, string $password, int $TipoDeUsuario, int $Status){
+            $this->intIdUsuario = $idUsuario;
+            $this->stridentificacion = $Identificacion;
+            $this->strNombre = $Nombre;
+            $this->strAppellido = $Apellido;
+            $this->intTelefono = $Telefono;
+            $this->strEmail = $Email;
+            $this->strPassword = $password;
+            $this->intTipoId = $TipoDeUsuario;
+            $this->intStatus = $Status;
+
+            $sql = "SELECT * FROM persona WHERE (email_user = '{$this->strEmail}' AND idpersona != $this->intIdUsuario) OR 
+            (identificacion = '{$this->stridentificacion}' AND idpersona != $this->intIdUsuario)";
+            
+            
+            $request = $this->select_all($sql);
+            
+
+            if(empty($request)){
+                if($this->strPassword != "")
+                {
+                    $sql = "UPDATE persona SET identificacion=?, nombres=?, apellidos=?, telefono=?, email_user=?,
+                            password=?, rolid=?, status=?
+                            WHERE idpersona = $this->intIdUsuario";
+                    $arrData = array (
+                        $this->stridentificacion,
+                        $this->strNombre,
+                        $this->strAppellido,
+                        $this->intTelefono,
+                        $this->strEmail,
+                        $this->strPassword,
+                        $this->intTipoId,
+                        $this->intStatus);
+                }else{
+                    $sql = "UPDATE persona SET identificacion=?, nombres=?, apellidos=?, telefono=?, email_user=?,
+                            rolid=?, status=?
+                            WHERE idpersona = $this->intIdUsuario";
+                    $arrData = array (
+                        $this->stridentificacion,
+                        $this->strNombre,
+                        $this->strAppellido,
+                        $this->intTelefono,
+                        $this->strEmail,
+                        $this->intTipoId,
+                        $this->intStatus);
+                }
+                $request = $this->update($sql, $arrData);
+                //echo($request);
+            }else{
+                $request = "exist";
+            }
+
+            return $request;
+        }
+
+        public function deleteUsuario(int $intIdpersona)
+        {
+            $this->intIdUsuario = $intIdpersona;
+            $sql = "UPDATE persona SET status = ? WHERE idpersona = $this->intIdUsuario";
+            $arrData = array(0);
+            $request = $this->update($sql, $arrData);
+            return $request;
         }
         
     }

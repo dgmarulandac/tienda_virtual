@@ -23,6 +23,33 @@ document.addEventListener('DOMContentLoaded', function(){
             {"data": "status"},
             {"data": "options"}
         ],
+        'dom': 'lBfrtip',
+        'buttons':[
+            {
+                "extend": "copyHtml5",
+                "text": "<i class='far fa-copy'></i> Copiar",
+                "titleAttr": "Copiar",
+                "className": "btn btn-secondary"
+            },
+            {
+                "extend": "excelHtml5",
+                "text": "<i class='far fa-file-excel'></i> Excel",
+                "titleAttr": "Exportar Excel",
+                "className": "btn btn-success"
+            },
+            {
+                "extend": "pdfHtml5",
+                "text": "<i class='far fa-file-pdf'></i> PDF",
+                "titleAttr": "Exportar PDF",
+                "className": "btn btn-danger"
+            },
+            {
+                "extend": "csvHtml5",
+                "text": "<i class='far fa-file-csv'></i> CSV",
+                "titleAttr": "Exportar a CSV",
+                "className": "btn btn-info"
+            }
+        ],
         "responsive": true, 
         "destroy": true, 
         "iDisplayLength": 10,
@@ -31,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
 
     var formUsuario = document.querySelector('#formUsuario');
-    if (formUsuario) {
+    
         formUsuario.onsubmit = function(e){
             e.preventDefault();
             
@@ -49,40 +76,47 @@ document.addEventListener('DOMContentLoaded', function(){
                 return false;
             }
 
+            let elementsValid = document.getElementsByClassName("valid");
+            for (let i = 0; i < elementsValid.length; i++){
+                if(elementsValid[i].classList.contains('is-invalid')){
+                    swal("Atención", "por favor verifique los campos en rojo.", "error");
+                    return false;
+                }
+            }
+
+            
             var request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
-            var ajaxUrl = base_url + '/Usuarios/setUsuario';
+            var ajaxUrl = base_url+'/Usuarios/setUsuario'; 
             var formData = new FormData(formUsuario);
-            request.open('POST', ajaxUrl, true);
+            request.open("POST",ajaxUrl,true);
             request.send(formData);
             
-            request.onreadystatechange = function() {
-                if(request.readyState === 4 && request.status === 200) {
-                    var response = JSON.parse(request.responseText);
-                        if (response.status){
-                            $('#modalFormUsuario').modal("hide");
-                            formUsuario.reset();
-                            swal("Usuarios", response.msg, "success");
-                            tableUsuarios.api().ajax.reload(function(){
-
-                            });
-                        }else{
-                            swal("Error", response.msg, "error");
-                        }
-                }else{
-                    console.log("Error");
+            request.onreadystatechange = function(){
+                if(request.readyState == 4 && request.status == 200){
+                    var objData = JSON.parse(request.responseText);
+                    if(objData.status)
+                    {
+                        $('#modalFormUsuario').modal("hide");
+                        formUsuario.reset();
+                        swal("Usuarios", objData.msg ,"success");
+                        tableUsuarios.api().ajax.reload();
+                    }else{
+                        swal("Error", objData.msg , "error");
+                    }
                 }
-            }    
+            }
+
         }
-    } else {
-        console.error('Formulario #formUsuario no encontrado.');
-    }
+    
 }, false);
 
 
 
 window.addEventListener('load', function(){
     fntRolesUsuario();
-    fntVerUsuario();
+    // fntVerUsuario();
+    // fntEditUsuario();
+    // fntDelUsuario();
 }, false);
 
 
@@ -100,11 +134,8 @@ function fntRolesUsuario(){
         }
     }
 }
-function fntVerUsuario(){
-    var btnViewUsuario = document.querySelectorAll(".btnViewUsuario");
-    btnViewUsuario.forEach(function(btnViewUsuario){
-        btnViewUsuario.addEventListener('click', function(){
-            var idUsuario = this.getAttribute("us");
+function fntVerUsuario(idpersona){
+            var idUsuario = idpersona;
             var request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
             var ajaxUser = base_url+'/Usuarios/getUsuario/' + idUsuario;
             request.open("GET", ajaxUser, true);
@@ -134,8 +165,85 @@ function fntVerUsuario(){
             }
 
             
-        })
-    })
+        
+}
+
+function fntEditUsuario(idpersona){
+   
+            document.querySelector('#titleModal').innerHTML="Actualizar Usuario";
+            document.querySelector('.modal-header').classList.replace("headerRegister", "headerUpdate");
+            document.querySelector('#btnActionForm').classList.replace("btn-primary", "btn-info");
+            document.querySelector('#btnText').innerHTML="Actualizar";
+
+            var idUsuario = idpersona;
+            var request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+            var ajaxUser = base_url+'/Usuarios/getUsuario/' + idUsuario;
+            request.open("GET", ajaxUser, true);
+            request.send();
+
+            request.onreadystatechange = function(){
+                if(request.readyState == 4 && request.status == 200){
+                    var objData = JSON.parse(request.responseText);
+                    if(objData.status)
+                        {
+                            document.querySelector("#idUsuario").value = objData.data.idpersona;
+                            document.querySelector("#txtIdentificacion").value = objData.data.identificacion;
+                            document.querySelector("#txtNombre").value = objData.data.nombres;
+                            document.querySelector("#txtApellido").value = objData.data.apellidos;
+                            document.querySelector("#txtTelefono").value = objData.data.telefono;
+                            document.querySelector("#txtEmail").value = objData.data.email_user;
+                            document.querySelector("#listRolid").value = objData.data.idrol;
+                            $('#listRolid').selectpicker('render');
+                            document.querySelector("#listStatus").value = objData.data.status;
+                            $('#listStatus').selectpicker('render');
+                            
+                        }else{
+                            swal("Error", objData.msg, "error");
+                        }
+                }
+                $('#modalFormUsuario').modal('show');
+            }
+}
+
+function fntDelUsuario(idpersona){
+            var idUsuario = idpersona;
+            swal({
+                title: "Eliminar Usuario",
+                text: "¿Realmente quiere eliminar el Usuario?",
+                type:  "warning",
+                showCancelButton: true,
+                confirmButtonText: "Si, elminar!",
+                cancelButtonText: "No, cancelar!",
+                closeOnConfirm: false,
+                closeOnCancel: true
+            }, function(isConfirm){
+                
+                if(isConfirm){
+                    var request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+                    var ajaxUrl = base_url+'/Usuarios/delUsuario/';
+                    var strData = "idUsuario="+idUsuario;
+                    request.open("POST", ajaxUrl, true);
+                    request.setRequestHeader("content-type", "application/x-www-form-urlencoded");
+                    request.send(strData);
+
+                    request.onreadystatechange = function(){
+                        if(request.readyState == 4 && request.status == 200){
+                            var objData = JSON.parse(request.responseText);
+                            if(objData.status)
+                            {
+                                swal("Elminar!", objData.msg, "success");
+                                tableUsuarios.api().ajax.reload(function(){
+                                   
+                                   
+                                });
+                            }else{
+                                swal("Atención!", objData.msg, "error");
+                            }
+                        }
+                    }
+
+                }
+            })
 }
 
 function openModal(){

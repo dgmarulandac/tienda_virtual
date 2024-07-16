@@ -15,12 +15,12 @@
                                     <input type="hidden" id="idRol" name="idRol" value="">
                                     <div class="form-group">
                                         <label class="control-label">Nombre</label>
-                                        <input class="form-control" id="txtNombre" name="txtNombre" type="text" placeholder="Nombre del Rol" required="">
+                                        <input class="form-control  valid validText" id="txtNombre" name="txtNombre" type="text" placeholder="Nombre del Rol" required="">
                                     </div>
                                 
                                     <div class="form-group">
                                         <label class="control-label">Descripción</label>
-                                        <textarea class="form-control" rows="2" id="txtDescription" name="txtDescription" placeholder="Descripción del Rol" required=""></textarea>
+                                        <textarea class="form-control valid validText" rows="2" id="txtDescription" name="txtDescription" placeholder="Descripción del Rol" required=""></textarea>
                                     </div>
 
                                     <div class="form-group">

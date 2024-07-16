@@ -18,13 +18,14 @@
             
             public function setUsuario(){
                if($_POST){
-
+                   
                     if (empty($_POST['txtIdentificacion']) || empty($_POST['txtNombre']) || empty($_POST['txtApellido'])
-                    || empty($_POST['txtTelefono']) || empty($_POST['txtEmail']) || empty($_POST['listRolid']) || empty($_POST['listStatus'])) {
+                    || empty($_POST['txtTelefono']) || empty($_POST['txtEmail']) || empty($_POST['listRolid']) || empty($_POST['listStatus'])) 
+                    {
 
                         $arrResponse = array("status" => false, "msg" => 'Datos incorrectos.');
                     }else{
-                      
+                        $strUsuario = intval($_POST['idUsuario']);
                         $strIdentificacion = strClean($_POST['txtIdentificacion']);
                         $strNombre = ucwords(strClean($_POST['txtNombre']));
                         $strApellido = ucwords(strClean($_POST['txtApellido']));
@@ -33,24 +34,54 @@
                         $intTipoDeUsuario = intVal(strClean($_POST['listRolid']));
                         $intStatus = intval(strClean($_POST['listStatus']));
                         
-                        $strPassword = empty($_POST['txtPassword']) ? hash("SHA256", passGenerator()) : hash("SHA256", $_POST['txtPassword']);
+                        if($strUsuario == 0){
+                            $option = 1;
+                            $strPassword = empty($_POST['txtPassword']) ? hash("SHA256", passGenerator()) : hash("SHA256", $_POST['txtPassword']);
+                            $request_user = $this->model->insertUsuario($strIdentificacion,
+                                                                        $strNombre, 
+                                                                        $strApellido, 
+                                                                        $intTelefono, 
+                                                                        $strEmail, 
+                                                                        $strPassword, 
+                                                                        $intTipoDeUsuario,
+                                                                        $intStatus);
+                        } else{
+                            $option = 2;
+                            $strPassword = empty($_POST['txtPassword']) ? "" : hash("SHA256", $_POST['txtPassword']);
+                            $request_user = $this->model->updateUsuario($strUsuario, 
+                                                                        $strIdentificacion,
+                                                                        $strNombre, 
+                                                                        $strApellido, 
+                                                                        $intTelefono, 
+                                                                        $strEmail, 
+                                                                        $strPassword, 
+                                                                        $intTipoDeUsuario,
+                                                                        $intStatus);
 
-                        $request_user = $this->model->insertUsuario($strIdentificacion, $strNombre, $strApellido, $intTelefono, $strEmail, $strPassword, $intTipoDeUsuario, $intStatus);
-
-                        if($request_user > 0)
+                        }
+                       
+                        if($request_user >= 0)
                         {
-                            $arrResponse = array("status" => true, "msg" => 'Datos Guardados correctamente.');
+                            if($option == 1){
+
+                                $arrResponse = array('status' => true, 'msg' => 'Datos Guardados correctamente.');
+
+                            }else{
+                                
+                                $arrResponse = array('status' => true, 'msg' => 'Datos Actualizados correctamente.');
+                            }
 
                         }else if($request_user == 'exist')
                         {
-                            $arrResponse = array("status" => false, "msg" => '¡Atención! el Email o la identificación ya existe, ingrese otro.');
+
+                            $arrResponse = array('status' => false, 'msg' => '¡Atención! el Email o la identificación ya existe, ingrese otro.');
 
                         }else
                         {
-                            $arrResponse = array("status" => false, "msg" => 'No es posible almacenar los datos .');
+                            $arrResponse = array('status' => false, 'msg' => 'No es posible almacenar los datos .');
                         }
                     }
-                    echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
+                    echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
                }
                die();
 
@@ -71,13 +102,13 @@
 
                     $arrData[$i]['options'] = '<div class="text-center">
                     
-                                                    <button class="btn btn-info btn-sm btnViewUsuario" id="'.$arrData[$i]['idpersona'].'" us="'.$arrData[$i]['idpersona'].'" onClick="fntVerUsuario('.$arrData[$i]['idpersona'].')" title="Ver usuario"><i class="fa-solid fa-eye"></i></button>
-                                                    <button class="btn btn-primary btn-sm btnEditUsuario" id="'.$arrData[$i]['idpersona'].'" us="'.$arrData[$i]['idpersona'].'" onClick="fntEditUsuario('.$arrData[$i]['idpersona'].')" title="Editar Usuario"><i class="fa-solid fa-pencil"></i></button>
-                                                    <button class="btn btn-danger btn-sm btnDelPersona" id="'.$arrData[$i]['idpersona'].'" us="'.$arrData[$i]['idpersona'].'" onClick="fntDelPersona('.$arrData[$i]['idpersona'].')" title="Eliminar Persona"><i class="fa-solid fa-trash-can"></i></button>
+                                                    <button class="btn btn-info btn-sm btnViewUsuario"  onClick="fntVerUsuario('.$arrData[$i]['idpersona'].')" title="Ver usuario"><i class="fa-solid fa-eye"></i></button>
+                                                    <button class="btn btn-primary btn-sm btnEditUsuario"  onClick="fntEditUsuario('.$arrData[$i]['idpersona'].')" title="Editar Usuario"><i class="fa-solid fa-pencil"></i></button>
+                                                    <button class="btn btn-danger btn-sm btnDelPersona"  onClick="fntDelUsuario('.$arrData[$i]['idpersona'].')" title="Eliminar Persona"><i class="fa-solid fa-trash-can"></i></button>
                                                 </div>';
                 }
                 
-                echo json_encode($arrData, JSON_UNESCAPED_UNICODE);
+                echo json_encode($arrData,JSON_UNESCAPED_UNICODE);
                 die();
             }
 
@@ -92,7 +123,23 @@
                     }else {
                         $arrResponse = array("status" => true, "data" => $arrData);
                     }
-                    echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
+                    echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
+                }
+                die();
+            }
+
+            public function delUsuario () {
+                if($_POST){
+                    $intIdpersona = intval($_POST['idUsuario']);
+                    $requestDelete = $this->model->deleteUsuario($intIdpersona);
+                    if($requestDelete)
+                    {
+                        $arrResponse = array('status' => true, 'msg' => 'Se ha eliminado el usuario.');
+                    }else{
+
+                        $arrResponse = array('status' => false, 'msg' => 'Error al eliminar el usuario.');
+                    }
+                    echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
                 }
                 die();
             }
