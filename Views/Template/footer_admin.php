@@ -7,7 +7,7 @@
     <script src="<?php echo media()?>/js/bootstrap.min.js"></script>
     <script src="<?php echo media()?>/js/main.js"></script>
     <script src="<?php echo media()?>/js/fontawesome.js"></script>
-    <script src="<?php echo media()?>/js/functions_admin.js"></script>
+    
     <!-- The javascript plugin to display page loading on top-->
     <!-- <script src="js/plugins/pace.min.js"></script> -->
     <!-- Page specific javascripts-->
@@ -23,13 +23,9 @@
     <script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
     <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
     
-    <?php if($data['page_name'] == "rol_user"){ ?>
-    <script src="<?php echo media()?>/js/functions_roles.js"></script>
-    <?php } ?>
-
-    <?php if($data['page_name'] == "usuarios"){ ?>
-    <script src="<?php echo media()?>/js/functions_usuarios.js"></script>
-    <?php } ?>
+    <script src="<?php echo media()?>/js/functions_admin.js"></script>
+    <script src="<?= media();?>/js/<?= $data['page_functions_js']; ?>"></script>
+    
 </body>
 </html>
 
